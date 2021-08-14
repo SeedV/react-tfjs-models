@@ -1,8 +1,11 @@
 import RockPaperScissors from './demos/RockPaperScissors';
+import CartoonMirror from './demos/CartoonMirror';
 
 function App() {
   return (
-    <RockPaperScissors />
+    // Temporarily disable to develop another app
+    // <RockPaperScissors />
+    <CartoonMirror />
   );
 }
 

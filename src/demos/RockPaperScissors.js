@@ -2,6 +2,7 @@ import Camera from '../components/Camera';
 import fp from 'fingerpose';
 import { useRef, useState, useEffect } from 'react';
 import useModel from '../hooks/useModel';
+import HandPoseLoader from '../models/HandPoseLoader';
 import { rock, paper, scissor } from '../utils/gesture';
 
 const style = {
@@ -23,7 +24,7 @@ const emojiMap = {
 const Game = (props) => {
   const estimator = useRef(null);
   const [gesture, setGesture] = useState();
-  const detector = useModel({backend: 'webgl'});
+  const detector = useModel(HandPoseLoader, {backend: 'webgl'});
 
   function onHandEstimate(predictions) {
     const estimated = estimator.current.estimate(predictions.landmarks, 7.5);
