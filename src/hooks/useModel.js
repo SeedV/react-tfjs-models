@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
@@ -15,6 +15,9 @@ tfjsWasm.setWasmPaths({
 const useModel = (loader, props) => {
   const { backend } = props;
   const modelRef = useRef(null);
+  const load = useCallback(async () => {
+    modelRef.current = await loader(props);
+  }, [loader, props]);
 
   async function setBackend(backend) {
     await tf.setBackend(backend);
@@ -22,15 +25,11 @@ const useModel = (loader, props) => {
       console.warn("The backend is set to WebAssembly and SIMD support is turned off.\nThis could bottleneck your performance greatly, thus to prevent this enable SIMD Support in chrome://flags");
     }
   }
-
-  async function load() {
-    modelRef.current = await loader(props);
-  }
   
   useEffect(() => {
     setBackend(backend);
     load();
-  }, [backend]);
+  }, [backend, load]);
   
   return modelRef;
 }
