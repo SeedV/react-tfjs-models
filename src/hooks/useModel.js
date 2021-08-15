@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useCallback} from 'react';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
@@ -59,7 +59,7 @@ const useModel = (loader, props) => {
   useEffect(() => {
     setBackend(backend);
     load();
-  }, [backend]);
+  }, [backend, load]);
 
   return modelRef;
 };
