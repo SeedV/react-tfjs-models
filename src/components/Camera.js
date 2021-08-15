@@ -23,7 +23,7 @@ const Camera = (props) => {
   const canvasRef = useRef(null);
 
   /**
-   * Detects camera characteristics.
+   * Detects poses.
    */
   function detect() {
     if (
