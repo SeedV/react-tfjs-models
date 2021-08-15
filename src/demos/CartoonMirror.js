@@ -45,9 +45,9 @@ const CartoonMirror = (props) => {
    * @param {HTMLMediaElement} video
    */
   async function onEstimate(video) {
-    const hands = detector.current;
-    if (hands !== null) {
-      const poses = await hands.estimatePoses(video, estimatePoseParam);
+    const poseDetector = detector.current;
+    if (poseDetector !== null) {
+      const poses = await poseDetector.estimatePoses(video, estimatePoseParam);
       console.log(poses);
     }
   }
