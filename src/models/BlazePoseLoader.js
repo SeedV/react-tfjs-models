@@ -34,7 +34,7 @@ const BlazePoseLoader = (props) => {
           modelType: type != null ? type : 'full',
         });
   } else {
-    console.warn('The runtime is not supported');
+    throw new Error('The runtime is not supported');
   }
 };
 
