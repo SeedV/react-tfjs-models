@@ -1,6 +1,6 @@
 {
-  "short_name": "React ML Kit Demo",
-  "name": "React ML Kit Demo",
+  "short_name": "react-tfjs-models Demo",
+  "name": "react-tfjs-models Demo",
   "icons": [
     {
       "src": "favicon.ico",

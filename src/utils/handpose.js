@@ -1,3 +1,20 @@
+/**
+ * @license
+ * Copyright 2021 The Aha001 Team.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 const fingerJoints = {
   thumb: [0, 1, 2, 3, 4],
   indexFinger: [0, 5, 6, 7, 8],
@@ -6,9 +23,14 @@ const fingerJoints = {
   pinky: [0, 17, 18, 19, 20],
 };
 
+/**
+ * Draws a hand.
+ * @param {Array<number>} landmarks
+ * @param {CanvasRenderingContext2D} ctx
+ */
 function drawHand(landmarks, ctx) {
   for (let j = 0; j < Object.keys(fingerJoints).length; j++) {
-    let finger = Object.keys(fingerJoints)[j];
+    const finger = Object.keys(fingerJoints)[j];
     //  Loop through pairs of joints
     for (let k = 0; k < fingerJoints[finger].length - 1; k++) {
       // Get pairs of joints
@@ -20,21 +42,33 @@ function drawHand(landmarks, ctx) {
 
   landmarks.forEach((landmark) => {
     drawPoint(landmark[0], landmark[1], ctx);
-  })
+  });
 }
 
+/**
+ * Draws a point.
+ * @param {number} x
+ * @param {number} y
+ * @param {CanvasRenderingContext2D} ctx
+ */
 function drawPoint(x, y, ctx) {
   ctx.beginPath();
   ctx.arc(x, y, 3, 0, 2 * Math.PI);
-  ctx.fillStyle = "red";
+  ctx.fillStyle = 'red';
   ctx.fill();
 }
 
+/**
+ * Draws a path.
+ * @param {number} from
+ * @param {number} to
+ * @param {CanvasRenderingContext2D} ctx
+ */
 function drawPath(from, to, ctx) {
   ctx.beginPath();
   ctx.moveTo(from[0], from[1]);
   ctx.lineTo(to[0], to[1]);
-  ctx.strokeStyle = "lime";
+  ctx.strokeStyle = 'lime';
   ctx.lineWidth = 4;
   ctx.stroke();
 }
