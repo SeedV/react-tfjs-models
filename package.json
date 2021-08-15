@@ -19,8 +19,8 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "lint": "npx eslint ./src",
-    "lint:fix": "npx eslint ./src --fix",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -39,11 +39,6 @@
     ]
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-jest": "^24.4.0",
-    "eslint-plugin-testing-library": "^4.10.1"
+    "eslint-config-google": "^0.14.0"
   }
 }
