@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import RockPaperScissors from './demos/RockPaperScissors';
 import CartoonMirror from './demos/CartoonMirror';
 
 /**
@@ -24,7 +23,7 @@ import CartoonMirror from './demos/CartoonMirror';
  */
 function App() {
   return (
-    // Temporarily disable to develop another app
+    // TODO: Support a configurable App, add React routing.
     // <RockPaperScissors />
     <CartoonMirror />
   );
