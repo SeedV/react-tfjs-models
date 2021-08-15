@@ -52,11 +52,7 @@ const CartoonMirror = (props) => {
     }
   }
 
-  return (
-    <>
-      <Camera style={style} onEstimate={onEstimate} />
-    </>
-  );
+  return <Camera style={style} onEstimate={onEstimate} />;
 };
 
 export default CartoonMirror;
