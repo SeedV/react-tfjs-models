@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
-import {useEffect, useRef} from 'react';
-import * as handpose from '@tensorflow-models/handpose';
+import {useEffect, useRef, useCallback} from 'react';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
@@ -33,9 +32,12 @@ tfjsWasm.setWasmPaths({
       `${tfjsWasm.version_wasm}/dist/tfjs-backend-wasm-threaded-simd.wasm`,
 });
 
-const useModel = (props) => {
+const useModel = (loader, props) => {
   const {backend} = props;
   const modelRef = useRef(null);
+  const load = useCallback(async () => {
+    modelRef.current = await loader(props);
+  }, [loader, props]);
 
   /**
    * Sets the backend.
@@ -56,10 +58,8 @@ const useModel = (props) => {
 
   useEffect(() => {
     setBackend(backend);
-    handpose.load().then((model) => {
-      modelRef.current = model;
-    });
-  }, [backend]);
+    load();
+  }, [backend, load]);
 
   return modelRef;
 };
