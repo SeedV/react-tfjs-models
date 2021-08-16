@@ -15,12 +15,18 @@
  * limitations under the License.
  */
 
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import Webcam from 'react-webcam';
+import {VideoContext} from './global';
+
+const initVideoState = {
+  video: null,
+};
 
 const Camera = (props) => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const [videoState, setVideoState] = useState(initVideoState);
 
   /**
    * Detects poses.
@@ -41,7 +47,7 @@ const Camera = (props) => {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      props.onEstimate(video);
+      setVideoState({...videoState, video: video});
     }
   }
 
@@ -61,6 +67,9 @@ const Camera = (props) => {
     <div>
       <Webcam ref={webcamRef} mirrored style={props.style} />
       <canvas ref={canvasRef} style={props.style} />
+      <VideoContext.Provider value={videoState}>
+        {props.children}
+      </VideoContext.Provider>
     </div>
   );
 };
