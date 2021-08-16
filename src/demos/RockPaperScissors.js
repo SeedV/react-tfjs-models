@@ -20,6 +20,7 @@ import fp from 'fingerpose';
 import {useRef, useState, useEffect} from 'react';
 import useModel from '../hooks/useModel';
 import {rock, paper, scissor} from '../utils/gesture';
+import HandPoseLoader from '../models/HandPoseLoader';
 
 const style = {
   position: 'absolute',
@@ -40,7 +41,7 @@ const emojiMap = {
 const Game = (props) => {
   const estimator = useRef(null);
   const [gesture, setGesture] = useState();
-  const detector = useModel({backend: 'webgl'});
+  const detector = useModel(HandPoseLoader, {backend: 'webgl'});
 
   /**
    * Handles hand estimate.
