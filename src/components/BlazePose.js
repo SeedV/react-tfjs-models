@@ -6,7 +6,7 @@ import BlazePoseLoader from '../models/BlazePoseLoader';
 const BlazePose = (props) => {
   const videoState = useContext(VideoContext);
   const detector = useModel(BlazePoseLoader, props);
-  const {maxPoses = 1, flipHorizontal} = props;
+  const {maxPoses = 1, flipHorizontal = false} = props;
 
   /**
    * Processes the video image with the pose estimator.
