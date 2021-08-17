@@ -15,27 +15,6 @@
  * limitations under the License.
  */
 
-import Camera from '../components/Camera';
-import BlazePose from '../components/BlazePose';
+import {createContext} from 'react';
 
-const style = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  zIndex: -1,
-  width: 160,
-  height: 120,
-};
-
-const CartoonMirror = (props) => {
-  return <Camera style={style}>
-    <BlazePose
-      backend='wasm'
-      runtime='mediapipe'
-      maxPoses={1}
-      flipHorizontal={true}/>
-  </Camera>;
-};
-
-export default CartoonMirror;
+export const VideoContext = createContext(null);
