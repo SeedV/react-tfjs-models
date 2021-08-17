@@ -28,7 +28,7 @@ const BlazePose = (props) => {
     onEstimate(videoState.video);
   }, [videoState, onEstimate]);
 
-  return <div/>;
+  return null;
 };
 
 export default BlazePose;

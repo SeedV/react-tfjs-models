@@ -44,7 +44,7 @@ const HandPose = (props) => {
     onEstimate(videoState.video);
   }, [videoState, onEstimate]);
 
-  return <div />;
+  return null;
 };
 
 export default HandPose;
