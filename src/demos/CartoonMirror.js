@@ -30,7 +30,11 @@ const style = {
 
 const CartoonMirror = (props) => {
   return <Camera style={style}>
-    <BlazePose backend='wasm' runtime='mediapipe'/>
+    <BlazePose
+      backend='wasm'
+      runtime='mediapipe'
+      maxPoses={1}
+      flipHorizontal={true}/>
   </Camera>;
 };
 

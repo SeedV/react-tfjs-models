@@ -3,14 +3,10 @@ import {VideoContext} from './global';
 import useModel from '../hooks/useModel';
 import BlazePoseLoader from '../models/BlazePoseLoader';
 
-const estimatePoseParam = {
-  maxPoses: 1,
-  flipHorizontal: true,
-};
-
 const BlazePose = (props) => {
   const videoState = useContext(VideoContext);
   const detector = useModel(BlazePoseLoader, props);
+  const {maxPoses = 1, flipHorizontal} = props;
 
   /**
    * Processes the video image with the pose estimator.
@@ -20,10 +16,13 @@ const BlazePose = (props) => {
   const onEstimate = useCallback(async (video) => {
     const poseDetector = detector.current;
     if (poseDetector !== null) {
-      const poses = await poseDetector.estimatePoses(video, estimatePoseParam);
+      const poses = await poseDetector.estimatePoses(video, {
+        maxPoses: maxPoses,
+        flipHorizontal: flipHorizontal,
+      });
       console.log(poses);
     }
-  }, [detector]);
+  }, [detector, maxPoses, flipHorizontal]);
 
   useEffect(() => {
     onEstimate(videoState.video);

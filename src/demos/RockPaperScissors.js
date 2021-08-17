@@ -18,9 +18,8 @@
 import Camera from '../components/Camera';
 import fp from 'fingerpose';
 import {useRef, useState, useEffect} from 'react';
-import useModel from '../hooks/useModel';
 import {rock, paper, scissor} from '../utils/gesture';
-import HandPoseLoader from '../models/HandPoseLoader';
+import HandPose from '../components/HandPose';
 
 const style = {
   position: 'absolute',
@@ -38,10 +37,9 @@ const emojiMap = {
   'paper': '✋',
 };
 
-const Game = (props) => {
+const RockPaperScissors = (props) => {
   const estimator = useRef(null);
   const [gesture, setGesture] = useState();
-  const detector = useModel(HandPoseLoader, {backend: 'webgl'});
 
   /**
    * Handles hand estimate.
@@ -59,23 +57,6 @@ const Game = (props) => {
     }
   }
 
-  /**
-   * Handles estimate.
-   * @param {HTMLMediaElement} video
-   */
-  function onEstimate(video) {
-    const hands = detector.current;
-    if (hands !== null) {
-      hands.estimateHands(video).then(
-          (predictions) => {
-            predictions.forEach((prediction) => {
-              onHandEstimate(prediction);
-            });
-          },
-      );
-    }
-  }
-
   useEffect(() => {
     estimator.current = new fp.GestureEstimator([
       rock, paper, scissor,
@@ -87,9 +68,11 @@ const Game = (props) => {
       <div style={{position: 'fixed', left: 32}}>
         <h1>{emojiMap[gesture]}</h1>
       </div>
-      <Camera style={style} backend='webgl' onEstimate={onEstimate} />
+      <Camera style={style}>
+        <HandPose backend='webgl' onHandEstimate={onHandEstimate}/>
+      </Camera>
     </>
   );
 };
 
-export default Game;
+export default RockPaperScissors;
