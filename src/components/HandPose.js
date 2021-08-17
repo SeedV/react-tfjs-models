@@ -33,13 +33,10 @@ const HandPose = (props) => {
   const onEstimate = useCallback(async (video) => {
     const hands = detector.current;
     if (hands !== null) {
-      hands.estimateHands(video).then(
-          (predictions) => {
-            predictions.forEach((prediction) => {
-              onHandEstimate(prediction);
-            });
-          },
-      );
+      const predictions = await hands.estimateHands(video);
+      predictions.forEach((prediction) => {
+        onHandEstimate(prediction);
+      });
     }
   }, [detector, onHandEstimate]);
 
