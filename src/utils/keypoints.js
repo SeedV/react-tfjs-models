@@ -36,7 +36,9 @@ function getHeadRotation(kp) {
 }
 
 /**
- * Returns rotation on Y axis.
+ * Returns rotation angle on Y axis.
+ *
+ * The angle is measured in radians and normalized based on its raw coordinates.
  *
  * @param {Keypoint} p1
  * @param {Keypoint} p2
@@ -50,7 +52,9 @@ function getYRotation(p1, p2, pivot) {
 }
 
 /**
- * Returns rotation on Z axis.
+ * Returns rotation angle on Z axis.
+ *
+ * The angle is measured in radians and normalized based on its raw coordinates.
  *
  * @param {Keypoint} p1
  * @param {Keypoint} p2
@@ -75,13 +79,14 @@ function normalize(min, max, val) {
 }
 
 /**
- * Get a quaternion to rotate from direction of the first vector to the second
- * vector. The vectors are specified by their points from the origin.
+ * Returns a quaternion to rotate between two 3D vectors. The first one is
+ * pointing from first to middle. The second one is pointing from middle to
+ * last.
  *
  * @param {Vector3} first
  * @param {Vector3} middle
  * @param {Vector3} last
- * @return {Quaternion}.
+ * @return {Quaternion} a quaternion to apply rotation.
  */
 function quaternionFrom(first, middle, last) {
   const v1 = new Vector3();
