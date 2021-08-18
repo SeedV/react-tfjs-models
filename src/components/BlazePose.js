@@ -23,7 +23,7 @@ import BlazePoseLoader from '../models/BlazePoseLoader';
 const BlazePose = (props) => {
   const videoState = useContext(VideoContext);
   const detector = useModel(BlazePoseLoader, props);
-  const {maxPoses = 1, flipHorizontal = false} = props;
+  const {maxPoses = 1, flipHorizontal = false, onPoseEstimate} = props;
 
   /**
    * Processes the video image with the pose estimator.
@@ -37,9 +37,11 @@ const BlazePose = (props) => {
         maxPoses: maxPoses,
         flipHorizontal: flipHorizontal,
       });
-      console.log(poses);
+      poses.forEach((pose) => {
+        onPoseEstimate(pose);
+      });
     }
-  }, [detector, maxPoses, flipHorizontal]);
+  }, [detector, maxPoses, flipHorizontal, onPoseEstimate]);
 
   useEffect(() => {
     onEstimate(videoState.video);
