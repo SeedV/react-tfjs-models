@@ -38,6 +38,22 @@ const CartoonMirror = (props) => {
     keypoints.current = pose.keypoints;
   };
 
+  const lights = <>
+    <ambientLight intensity={0.4} />
+    <directionalLight
+      castShadow
+      position={[-8, 16, -8]}
+      intensity={0}
+      shadow-mapSize-width={1024}
+      shadow-mapSize-height={1024}
+      shadow-camera-far={50}
+      shadow-camera-left={-10}
+      shadow-camera-right={10}
+      shadow-camera-top={10}
+      shadow-camera-bottom={-10} />
+    <pointLight position={[0, 50, 0]} intensity={2} />
+  </>;
+
   return <div>
     <Camera style={style}>
       <BlazePose
@@ -52,19 +68,7 @@ const CartoonMirror = (props) => {
         colorManagement
         shadowMap
         camera={{position: [0, 0, 2], fov: 60}}>
-        <ambientLight intensity={0.4} />
-        <directionalLight
-          castShadow
-          position={[-8, 16, -8]}
-          intensity={0}
-          shadow-mapSize-width={1024}
-          shadow-mapSize-height={1024}
-          shadow-camera-far={50}
-          shadow-camera-left={-10}
-          shadow-camera-right={10}
-          shadow-camera-top={10}
-          shadow-camera-bottom={-10} />
-        <pointLight position={[0, 50, 0]} intensity={2} />
+        {lights}
         <Suspense fallback={null}>
           <mesh position={[0, -1, 0]}>
             <Mousy keypoints={keypoints}/>
