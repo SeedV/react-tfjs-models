@@ -36,7 +36,7 @@ export default function Mousy(props) {
   useFrame((state, delta) => {
     kp = props.keypoints.current;
 
-    if (typeof kp !== 'undefined' && kp !== null) {
+    if (kp != null) {
       nodes.Ch14.skeleton.bones[5].setRotationFromEuler(
           getHeadRotation(kp));
 
