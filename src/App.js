@@ -15,7 +15,18 @@
  * limitations under the License.
  */
 
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from 'react-router-dom';
 import CartoonMirror from './demos/CartoonMirror';
+import RockPaperScissors from './demos/RockPaperScissors';
+
+const pathRockPaperScissors = '/rockpaperscissors';
+const pathCartoonMirror = '/cartoonmirror';
 
 /**
  * The app component.
@@ -23,9 +34,28 @@ import CartoonMirror from './demos/CartoonMirror';
  */
 function App() {
   return (
-    // TODO: Support a configurable App, add React routing.
-    // <RockPaperScissors />
-    <CartoonMirror />
+    <Router>
+      <div>
+        <Switch>
+          <Route path="/" exact>
+            <ul>
+              <li>
+                <Link to={pathRockPaperScissors}>RockPaperScissors</Link>
+              </li>
+              <li>
+                <Link to={pathCartoonMirror}>CartoonMirror</Link>
+              </li>
+            </ul>
+          </Route>
+          <Route path={pathRockPaperScissors}>
+            <RockPaperScissors />
+          </Route>
+          <Route path={pathCartoonMirror}>
+            <CartoonMirror />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
