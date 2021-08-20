@@ -33,10 +33,10 @@ const VideoPlaybackDemo = (props) => {
   const DEFAULT_LINE_WIDTH = 3;
   const DEFAULT_RADIUS = 5;
 
-  const backend = 'mediapipe-gpu';
-  const model = 'BlazePose';
+  const model = posedetection.SupportedModels.MoveNet;
   const modelConfig = {
-    type: 'full',
+    type: posedetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
+    maxPoses: 1,
     scoreThreshold: 0.65,
   };
 
@@ -60,17 +60,9 @@ const VideoPlaybackDemo = (props) => {
 
   const setupDetector = async () => {
     const createDetector = async () => {
-      const runtime = backend.split('-')[0];
-      if (runtime === 'mediapipe') {
-        return posedetection.createDetector(model, {
-          runtime,
-          modelType: modelConfig.type,
-          solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/pose',
-        });
-      } else if (runtime === 'tfjs') {
-        return posedetection.createDetector(
-            model, {runtime, modelType: modelConfig.type});
-      }
+      return posedetection.createDetector(model, {
+        modelType: modelConfig.type,
+      });
     };
 
     detectorRef.current = await createDetector();
@@ -90,7 +82,6 @@ const VideoPlaybackDemo = (props) => {
         video,
         {maxPoses: modelConfig.maxPoses, flipHorizontal: true});
 
-    console.log(poses);
     if (typeof poses === 'undefined' || poses === null || poses.length === 0) {
       return;
     }
@@ -166,7 +157,7 @@ const VideoPlaybackDemo = (props) => {
    * @param {string} backend
    */
   async function setBackend() {
-    await tf.setBackend('wasm');
+    await tf.setBackend('webgl');
   }
 
   const run = () => {
@@ -174,9 +165,6 @@ const VideoPlaybackDemo = (props) => {
     const canvas = canvasRef.current;
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.translate(video.videoWidth, 0);
-    ctx.scale(-1, 1);
     setBackend();
     setupDetector();
   };
