@@ -38,6 +38,7 @@ function App() {
       <div>
         <Switch>
           <Route path="/" exact>
+          This page shows a list of demos in this project.
             <ul>
               <li>
                 <Link to={pathRockPaperScissors}>RockPaperScissors</Link>
