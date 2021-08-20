@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import Webcam from 'react-webcam';
 import {VideoContext} from './global';
 
@@ -27,41 +27,45 @@ const Camera = (props) => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [videoState, setVideoState] = useState(initVideoState);
-
-  /**
-   * Detects poses.
-   */
-  function detect() {
-    if (
-      typeof webcamRef.current !== 'undefined' &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
-      const video = webcamRef.current.video;
-      const videoWidth = video.videoWidth;
-      const videoHeight = video.videoHeight;
-
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
-
-      canvasRef.current.width = videoWidth;
-      canvasRef.current.height = videoHeight;
-
-      setVideoState({...videoState, video: video});
-    }
-  }
+  const requestRef = useRef(null);
 
   /**
    * Handles animation frames.
    */
-  function onAnimate() {
+  const onAnimate = useCallback(() => {
+    /**
+     * Detects poses.
+     */
+    function detect() {
+      if (
+        typeof webcamRef.current !== 'undefined' &&
+        webcamRef.current !== null &&
+        webcamRef.current.video.readyState === 4
+      ) {
+        const video = webcamRef.current.video;
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+
+        webcamRef.current.video.width = videoWidth;
+        webcamRef.current.video.height = videoHeight;
+
+        canvasRef.current.width = videoWidth;
+        canvasRef.current.height = videoHeight;
+
+        setVideoState((prevState) => {
+          return {...prevState, video: video};
+        });
+      }
+    }
+
     detect();
-    requestAnimationFrame(onAnimate);
-  }
+    requestRef.current = requestAnimationFrame(onAnimate);
+  }, []);
 
   useEffect(() => {
     onAnimate();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [onAnimate]);
 
   return (
     <div>
