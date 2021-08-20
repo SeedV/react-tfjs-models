@@ -33,32 +33,25 @@ const Camera = (props) => {
    * Handles animation frames.
    */
   const onAnimate = useCallback(() => {
-    /**
-     * Detects poses.
-     */
-    function detect() {
-      if (
-        typeof webcamRef.current !== 'undefined' &&
-        webcamRef.current !== null &&
-        webcamRef.current.video.readyState === 4
-      ) {
-        const video = webcamRef.current.video;
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
+    if (
+      typeof webcamRef.current !== 'undefined' &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      const video = webcamRef.current.video;
+      const videoWidth = video.videoWidth;
+      const videoHeight = video.videoHeight;
 
-        webcamRef.current.video.width = videoWidth;
-        webcamRef.current.video.height = videoHeight;
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
 
-        canvasRef.current.width = videoWidth;
-        canvasRef.current.height = videoHeight;
+      canvasRef.current.width = videoWidth;
+      canvasRef.current.height = videoHeight;
 
-        setVideoState((prevState) => {
-          return {...prevState, video: video};
-        });
-      }
+      setVideoState((prevState) => {
+        return {...prevState, video: video};
+      });
     }
-
-    detect();
     requestRef.current = requestAnimationFrame(onAnimate);
   }, []);
 
