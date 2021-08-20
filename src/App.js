@@ -25,10 +25,12 @@ import {
 import CartoonMirror from './demos/CartoonMirror';
 import FaceMeshDemo from './demos/FaceMeshDemo';
 import RockPaperScissors from './demos/RockPaperScissors';
+import VideoPlaybackDemo from './demos/VideoPlaybackDemo';
 
 const pathRockPaperScissors = '/rockpaperscissors';
 const pathCartoonMirror = '/cartoonmirror';
 const pathFaceMesh = '/facemesh';
+const pathVideoPlayback = '/videoplayback';
 
 /**
  * The app component.
@@ -51,6 +53,9 @@ function App() {
               <li>
                 <Link to={pathFaceMesh}>FaceMesh</Link>
               </li>
+              <li>
+                <Link to={pathVideoPlayback}>VideoPlayback</Link>
+              </li>
             </ul>
           </Route>
           <Route path={pathRockPaperScissors}>
@@ -61,6 +66,9 @@ function App() {
           </Route>
           <Route path={pathFaceMesh}>
             <FaceMeshDemo />
+          </Route>
+          <Route path={pathVideoPlayback}>
+            <VideoPlaybackDemo />
           </Route>
         </Switch>
       </div>
