@@ -17,7 +17,7 @@
 
 import Camera from '../components/Camera';
 import fp from 'fingerpose';
-import {useRef, useState, useEffect} from 'react';
+import {useRef, useState} from 'react';
 import {rock, paper, scissor} from '../utils/gesture';
 import HandPose from '../components/HandPose';
 
@@ -38,7 +38,7 @@ const emojiMap = {
 };
 
 const RockPaperScissors = (props) => {
-  const estimator = useRef(null);
+  const estimator = useRef(new fp.GestureEstimator([rock, paper, scissor]));
   const [gesture, setGesture] = useState();
 
   /**
@@ -56,12 +56,6 @@ const RockPaperScissors = (props) => {
       }
     }
   }
-
-  useEffect(() => {
-    estimator.current = new fp.GestureEstimator([
-      rock, paper, scissor,
-    ]);
-  }, []);
 
   return (
     <>

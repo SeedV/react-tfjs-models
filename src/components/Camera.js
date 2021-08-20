@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import Webcam from 'react-webcam';
 import {VideoContext} from './global';
 
@@ -27,15 +27,15 @@ const Camera = (props) => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [videoState, setVideoState] = useState(initVideoState);
+  const requestRef = useRef(null);
 
   /**
-   * Detects poses.
+   * Handles animation frames.
    */
-  function detect() {
+  const onAnimate = useCallback(() => {
     if (
-      typeof webcamRef.current !== 'undefined' &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
+      webcamRef.current != null &&
+      webcamRef.current.video.readyState == 4
     ) {
       const video = webcamRef.current.video;
       const videoWidth = video.videoWidth;
@@ -47,21 +47,17 @@ const Camera = (props) => {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      setVideoState({...videoState, video: video});
+      setVideoState((prevState) => {
+        return {...prevState, video: video};
+      });
     }
-  }
-
-  /**
-   * Handles animation frames.
-   */
-  function onAnimate() {
-    detect();
-    requestAnimationFrame(onAnimate);
-  }
+    requestRef.current = requestAnimationFrame(onAnimate);
+  }, []);
 
   useEffect(() => {
     onAnimate();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [onAnimate]);
 
   return (
     <div>
