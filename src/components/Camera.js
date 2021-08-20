@@ -34,9 +34,8 @@ const Camera = (props) => {
    */
   const onAnimate = useCallback(() => {
     if (
-      typeof webcamRef.current !== 'undefined' &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
+      webcamRef.current != null &&
+      webcamRef.current.video.readyState == 4
     ) {
       const video = webcamRef.current.video;
       const videoWidth = video.videoWidth;
