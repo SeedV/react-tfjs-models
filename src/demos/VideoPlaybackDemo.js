@@ -16,11 +16,10 @@
  */
 
 import './VideoPlaybackDemo.css';
-import {Suspense, useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import * as posedetection from '@tensorflow-models/pose-detection';
-import {Canvas} from '@react-three/fiber';
-import Mousy from '../components/Mousy';
 import * as tf from '@tensorflow/tfjs-core';
+import {drawPose} from '../utils/handpose';
 
 const VideoPlaybackDemo = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -29,9 +28,6 @@ const VideoPlaybackDemo = (props) => {
   const canvasRef = useRef(null);
   const rafIdRef = useRef(0);
   const detectorRef = useRef(null);
-  const keypointsRef = useRef(null);
-  const DEFAULT_LINE_WIDTH = 3;
-  const DEFAULT_RADIUS = 5;
 
   const model = posedetection.SupportedModels.MoveNet;
   const modelConfig = {
@@ -39,6 +35,8 @@ const VideoPlaybackDemo = (props) => {
     maxPoses: 1,
     scoreThreshold: 0.65,
   };
+  const keypointIndices = posedetection.util.getKeypointIndexBySide(model);
+  const adjacentPairs = posedetection.util.getAdjacentPairs(model);
 
   const style = {
     position: 'absolute',
@@ -47,6 +45,7 @@ const VideoPlaybackDemo = (props) => {
     right: 0,
     zIndex: 9,
   };
+
 
   const fileSelectedHandler = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -82,74 +81,14 @@ const VideoPlaybackDemo = (props) => {
         video,
         {maxPoses: modelConfig.maxPoses, flipHorizontal: true});
 
-    if (typeof poses === 'undefined' || poses === null || poses.length === 0) {
+    if (poses == null || poses.length === 0) {
       return;
     }
     const ctx = canvasRef.current.getContext('2d');
     ctx.clearRect(0, 0, video.videoWidth, video.videoHeight);
     for (const pose of poses) {
-      drawPose(pose, ctx);
+      drawPose(pose, keypointIndices, adjacentPairs, ctx);
     }
-  };
-
-  const drawPose = (predictions, ctx) => {
-    const keypoints = predictions.keypoints;
-    keypointsRef.current = keypoints;
-    drawKeypoints(keypoints, ctx);
-    drawSkeleton(keypoints, ctx);
-  };
-
-  const drawKeypoints = (keypoints, ctx) => {
-    const keypointInd =
-       posedetection.util.getKeypointIndexBySide(model);
-
-    for (const i of keypointInd.middle) {
-      drawKeypoint(keypoints[i], 'yellow', ctx);
-    }
-
-    for (const i of keypointInd.left) {
-      drawKeypoint(keypoints[i], 'lime', ctx);
-    }
-
-    for (const i of keypointInd.right) {
-      drawKeypoint(keypoints[i], 'red', ctx);
-    }
-  };
-
-  const drawKeypoint = (keypoint, color, ctx) => {
-    const score = keypoint.score != null ? keypoint.score : 1;
-    const scoreThreshold = modelConfig.scoreThreshold || 0;
-
-    if (score >= scoreThreshold) {
-      ctx.beginPath();
-      ctx.arc(keypoint.x, keypoint.y, DEFAULT_RADIUS, 0, 2 * Math.PI);
-      ctx.fillStyle = color;
-      ctx.fill();
-    }
-  };
-
-  const drawSkeleton = (keypoints, ctx) => {
-    ctx.fillStyle = 'White';
-    ctx.strokeStyle = 'White';
-    ctx.lineWidth = DEFAULT_LINE_WIDTH;
-
-    posedetection.util.getAdjacentPairs(model)
-        .forEach(([i, j]) => {
-          const kp1 = keypoints[i];
-          const kp2 = keypoints[j];
-
-          // If score is null, just show the keypoint.
-          const score1 = kp1.score != null ? kp1.score : 1;
-          const score2 = kp2.score != null ? kp2.score : 1;
-          const scoreThreshold = modelConfig.scoreThreshold || 0;
-
-          if (score1 >= scoreThreshold && score2 >= scoreThreshold) {
-            ctx.beginPath();
-            ctx.moveTo(kp1.x, kp1.y);
-            ctx.lineTo(kp2.x, kp2.y);
-            ctx.stroke();
-          }
-        });
   };
 
   /**
