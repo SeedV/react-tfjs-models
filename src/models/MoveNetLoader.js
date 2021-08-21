@@ -23,7 +23,7 @@ const MoveNetLoader = (props) => {
   return posedetection.createDetector(
       posedetection.SupportedModels.MoveNet, {
         runtime,
-        modelType: type != null ? type : 'full',
+        modelType: type || posedetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
       });
 };
 
