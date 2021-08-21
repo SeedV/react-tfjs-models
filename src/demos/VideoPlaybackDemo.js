@@ -18,8 +18,9 @@
 import './VideoPlaybackDemo.css';
 import {useRef, useState} from 'react';
 import * as posedetection from '@tensorflow-models/pose-detection';
-import * as tf from '@tensorflow/tfjs-core';
 import {drawPose} from '../utils/handpose';
+import useModel from '../hooks/useModel';
+import MoveNetLoader from '../models/MoveNetLoader';
 
 const VideoPlaybackDemo = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -27,7 +28,10 @@ const VideoPlaybackDemo = (props) => {
   const sourceRef = useRef(null);
   const canvasRef = useRef(null);
   const rafIdRef = useRef(0);
-  const detectorRef = useRef(null);
+  const detectorRef = useModel(MoveNetLoader, {
+    backend: 'webgl',
+    type: posedetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
+  });
 
   const model = posedetection.SupportedModels.MoveNet;
   const modelConfig = {
@@ -46,7 +50,6 @@ const VideoPlaybackDemo = (props) => {
     zIndex: 9,
   };
 
-
   const fileSelectedHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -55,17 +58,6 @@ const VideoPlaybackDemo = (props) => {
     const videoSource = URL.createObjectURL(selectedFile);
     sourceRef.current.src = videoSource;
     videoRef.current.load();
-  };
-
-  const setupDetector = async () => {
-    const createDetector = async () => {
-      return posedetection.createDetector(model, {
-        modelType: modelConfig.type,
-      });
-    };
-
-    detectorRef.current = await createDetector();
-    animate();
   };
 
   const animate = () => {
@@ -91,21 +83,12 @@ const VideoPlaybackDemo = (props) => {
     }
   };
 
-  /**
-   * Sets the backend.
-   * @param {string} backend
-   */
-  async function setBackend() {
-    await tf.setBackend('webgl');
-  }
-
   const run = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    setBackend();
-    setupDetector();
+    animate();
   };
 
   const onEnded = () => {
