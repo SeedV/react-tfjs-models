@@ -61,8 +61,10 @@ const VideoPlaybackDemo = (props) => {
 
   return (
     <div className="App">
-      <input type="file" onChange={fileSelectedHandler} accept="video/*"/>
-      <button onClick={fileUploadHandler}>Upload</button>
+      {videoSource == null && <>
+        <input type="file" onChange={fileSelectedHandler} accept="video/*"/>
+        <button onClick={fileUploadHandler}>Upload</button>
+      </>}
       <VideoPlayback style={style} videoSource={videoSource}
         setCanvas={setCanvas}>
         <BlazePose
