@@ -54,6 +54,11 @@ and tweak the algorithms. It's also highly customizable to adopt to the real app
 
 This project provides a list of demos to show case how the components work. Please check out the `demos` folder.
 
+| Demo | Description |
+| ---- | ----------- |
+| RockPaperScissors | a HandPose estimation demo of the classic game. |
+| CartoonMirror | a BlazePose demo to recognize the pose from webcam, and control a 3D character to mimic the pose. |
+
 ## Development
 
 ```
