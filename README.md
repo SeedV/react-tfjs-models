@@ -1,7 +1,7 @@
 # react-tfjs-models
 
 `react-tfjs-models` is a set of components and utilities to create machine learning applications using
-React. It's based on Google's [tensorflow tfjs models](https://github.com/tensorflow/tfjs-models), including 
+React. It's based on Google's [tensorflow tfjs models](https://github.com/tensorflow/tfjs-models), including
 image classification, pose detection, face detection, body segmentation and more.
 
 Comparing to integrating the underlying library, this project provides various supports for non-machine learning
@@ -9,7 +9,7 @@ experts to use these models in their Rect applications.
 
 ## React components hierarchy
 
-`react-tfjs-models` has provided a more intuitive declarative syntax, rather than the traditional imperative 
+`react-tfjs-models` has provided a more intuitive declarative syntax, rather than the traditional imperative
 approach. An application to use `BlazePose` model to analyze each frame from a webcam stream would look like:
 
 ```jsx
