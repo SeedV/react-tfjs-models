@@ -12,7 +12,7 @@ experts to use these models in their Rect applications.
 `react-tfjs-models` has provided a more intuitive declarative syntax, rather than the traditional imperative 
 approach. An application to use `BlazePose` model to analyze each frame from a webcam stream would look like:
 
-```
+```jsx
 <Camera ...>
   <BlazePose ...>
     <Animation />
@@ -24,7 +24,7 @@ Generally speaking, a streaming based machine learning hierarchy would consist o
 and an output layer, and each layer has swappable components developed in `react-tfjs-models`, and can also be
 implemented by application developers.
 
-```
+```jsx
 <Input ...>
   <Model ...>
     <Output />
@@ -40,7 +40,8 @@ elements and convert the extracted frame into a Rect state.
 
 ### Model layer
 
-The components in this layer are machine learning models provided by [`tfjs-models`](https://github.com/tensorflow/tfjs-models/).
+The components in this layer are machine learning models provided by [`tfjs-models`]
+(https://github.com/tensorflow/tfjs-models/).
 
 This layer will also support model acceleration on webgl and wasm backend, if the model supports.
 
@@ -61,7 +62,7 @@ This project provides a list of demos to show case how the components work. Plea
 
 ## Development
 
-```
+```shell
 # Install dependencies
 yarn install
 
