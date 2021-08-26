@@ -30,7 +30,7 @@ const style = {
 
 const FaceMeshDemo = (props) => {
   /**
-   * Handle face estimation.
+   * Handles face estimation.
    * @param {Object} prediction
    */
   function onFaceEstimate(prediction) {
