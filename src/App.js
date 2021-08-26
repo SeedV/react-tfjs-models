@@ -23,10 +23,12 @@ import {
   Link,
 } from 'react-router-dom';
 import CartoonMirror from './demos/CartoonMirror';
+import FaceMeshDemo from './demos/FaceMeshDemo';
 import RockPaperScissors from './demos/RockPaperScissors';
 
 const pathRockPaperScissors = '/rockpaperscissors';
 const pathCartoonMirror = '/cartoonmirror';
+const pathFaceMesh = '/facemesh';
 
 /**
  * The app component.
@@ -46,6 +48,9 @@ function App() {
               <li>
                 <Link to={pathCartoonMirror}>CartoonMirror</Link>
               </li>
+              <li>
+                <Link to={pathFaceMesh}>FaceMesh</Link>
+              </li>
             </ul>
           </Route>
           <Route path={pathRockPaperScissors}>
@@ -53,6 +58,9 @@ function App() {
           </Route>
           <Route path={pathCartoonMirror}>
             <CartoonMirror />
+          </Route>
+          <Route path={pathFaceMesh}>
+            <FaceMeshDemo />
           </Route>
         </Switch>
       </div>
