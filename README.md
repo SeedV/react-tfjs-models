@@ -68,7 +68,4 @@ yarn install
 
 # Start demo server on http.
 yarn start
-
-# Or start demo server on https (for camera access in browser to work on localhost).
-yarn start-https
 ```
