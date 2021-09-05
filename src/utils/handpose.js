@@ -23,6 +23,8 @@ const fingerJoints = {
   pinky: [0, 17, 18, 19, 20],
 };
 
+const scoreThreshold = 0.65;
+
 /**
  * Draws a hand.
  * @param {Array<number>} landmarks
@@ -73,4 +75,83 @@ function drawPath(from, to, ctx) {
   ctx.stroke();
 }
 
-export {drawHand};
+/**
+ * Draws a pose.
+ * @param {Object} predictions
+ * @param {Array<Object>} keypointIndices
+ * @param {Array<Object>} adjacentPairs
+ * @param {CanvasRenderingContext2D} ctx
+ */
+function drawPose(predictions, keypointIndices, adjacentPairs, ctx) {
+  const keypoints = predictions.keypoints;
+  drawKeypoints(keypoints, keypointIndices, ctx);
+  drawSkeleton(keypoints, adjacentPairs, ctx);
+}
+
+/**
+ * Draws all keypoints. The keypoints to the left are in lime, the keypoints to
+ * the right are in red, the keypoints to the middle are in yellow.
+ * @param {Array<Object>} keypoints
+ * @param {Array<Object>} keypointIndices
+ * @param {CanvasRenderingContext2D} ctx
+ */
+function drawKeypoints(keypoints, keypointIndices, ctx) {
+  for (const i of keypointIndices.middle) {
+    drawKeypoint(keypoints[i], 'yellow', ctx);
+  }
+
+  for (const i of keypointIndices.left) {
+    drawKeypoint(keypoints[i], 'lime', ctx);
+  }
+
+  for (const i of keypointIndices.right) {
+    drawKeypoint(keypoints[i], 'red', ctx);
+  }
+}
+
+/**
+ * Draws a keypoint.
+ * @param {Object} keypoint
+ * @param {string} color
+ * @param {CanvasRenderingContext2D} ctx
+ */
+function drawKeypoint(keypoint, color, ctx) {
+  const score = keypoint.score != null ? keypoint.score : 1;
+  if (score >= scoreThreshold) {
+    ctx.beginPath();
+    ctx.arc(keypoint.x, keypoint.y, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+}
+
+/**
+ * Draws a skeleton.
+ * @param {Array<Object>} keypoints
+ * @param {Array<Object>} adjacentPairs
+ * @param {CanvasRenderingContext2D} ctx
+ */
+function drawSkeleton(keypoints, adjacentPairs, ctx) {
+  ctx.fillStyle = 'White';
+  ctx.strokeStyle = 'White';
+  ctx.lineWidth = 3;
+
+  adjacentPairs
+      .forEach(([i, j]) => {
+        const kp1 = keypoints[i];
+        const kp2 = keypoints[j];
+
+        // If score is null, just show the keypoint.
+        const score1 = kp1.score != null ? kp1.score : 1;
+        const score2 = kp2.score != null ? kp2.score : 1;
+
+        if (score1 >= scoreThreshold && score2 >= scoreThreshold) {
+          ctx.beginPath();
+          ctx.moveTo(kp1.x, kp1.y);
+          ctx.lineTo(kp2.x, kp2.y);
+          ctx.stroke();
+        }
+      });
+}
+
+export {drawHand, drawPose};
