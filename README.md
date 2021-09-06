@@ -47,7 +47,8 @@ elements and convert the extracted frame into a Rect state.
 
 ### Model layer
 
-The components in this layer are machine learning models provided by [`tfjs-models`](https://github.com/tensorflow/tfjs-models/).
+The components in this layer are machine learning models provided by 
+[`tfjs-models`](https://github.com/tensorflow/tfjs-models/).
 
 This layer will also support model acceleration on webgl and wasm backend, if the model supports.
 
