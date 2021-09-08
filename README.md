@@ -38,12 +38,29 @@ The components in this layer generate a stream of images from input devices. It 
 extractor. This layer wraps the heavy lifting in setting up the HTML structure of using `<video>` and `<canvas>`
 elements and convert the extracted frame into a Rect state.
 
+`react-tfjs-models` provides the below components as input layer:
+
+| Component | Description |
+| --------- | ----------- |
+| Camera | A webcam that provides video source to the model. |
+| VideoPlayback | A video extractor that send video frames. |
+
 ### Model layer
 
-The components in this layer are machine learning models provided by [`tfjs-models`]
-(https://github.com/tensorflow/tfjs-models/).
+The components in this layer are machine learning models provided by 
+[`tfjs-models`](https://github.com/tensorflow/tfjs-models/).
 
 This layer will also support model acceleration on webgl and wasm backend, if the model supports.
+
+`react-tjfs-models` provides the below components as models:
+
+| Component | Description |
+| --------- | ----------- |
+| BlazePose | Pose estimator, the implementation can be chosen from `BlazePose` and `MoveNet`. (`PoseNet` isn't provided yet.) |
+| HandPose | Mediapipe [handpose](https://github.com/tensorflow/tfjs-models/tree/master/handpose), a 21-point 3D hand keypoints detector. |
+| FaceMesh | Mediapipe [facemesh](https://github.com/tensorflow/tfjs-models/tree/master/face-landmarks-detection), a 486-point 3D facial landmark detector. |
+
+Please refer to respective model details in <https://github.com/tensorflow/tfjs-models>.
 
 ### Output layer
 
@@ -59,6 +76,8 @@ This project provides a list of demos to show case how the components work. Plea
 | ---- | ----------- |
 | RockPaperScissors | a HandPose estimation demo of the classic game. |
 | CartoonMirror | a BlazePose demo to recognize the pose from webcam, and control a 3D character to mimic the pose. |
+| FaceMeshDemo | a FaceMesh demo to recognize face landmarks (still in development). |
+| VideoPlaybackDemo | a demo to use a video to test ML model (MoveNet). |
 
 ## Development
 
