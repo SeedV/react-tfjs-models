@@ -31,6 +31,7 @@ import {Vector3} from 'three';
 export default function Mousy(props) {
   let kp;
   const group = useRef();
+  const mesh = useRef();
   const {nodes, materials} = useGLTF('../../../mousy.glb');
 
   useFrame((state, delta) => {
@@ -58,17 +59,22 @@ export default function Mousy(props) {
   });
 
   return (
-    <group ref={group} {...props} dispose={null}>
-      <group
-        name="Armature"
-        rotation={[Math.PI / 2, 0, 0]}
-        scale={[0.01, 0.01, 0.01]}>
-        <primitive object={nodes.mixamorigHips} />
-        <skinnedMesh
-          geometry={nodes.Ch14.geometry}
-          material={materials.Ch14_Body}
-          skeleton={nodes.Ch14.skeleton} />
+    <mesh
+      {...props}
+      ref={mesh}
+    >
+      <group ref={group} dispose={null}>
+        <group
+          name="Armature"
+          rotation={[Math.PI / 2, 0, 0]}
+          scale={[0.01, 0.01, 0.01]}>
+          <primitive object={nodes.mixamorigHips} />
+          <skinnedMesh
+            geometry={nodes.Ch14.geometry}
+            material={materials.Ch14_Body}
+            skeleton={nodes.Ch14.skeleton} />
+        </group>
       </group>
-    </group>
+    </mesh>
   );
 }

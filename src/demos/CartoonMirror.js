@@ -70,9 +70,7 @@ const CartoonMirror = (props) => {
         camera={{position: [0, 0, 2], fov: 60}}>
         {lights}
         <Suspense fallback={null}>
-          <mesh position={[0, -1, 0]}>
-            <Mousy keypoints={keypoints}/>
-          </mesh>
+          <Mousy keypoints={keypoints} position={[0, -1, 0]}/>
         </Suspense>
       </Canvas>
     </div>
