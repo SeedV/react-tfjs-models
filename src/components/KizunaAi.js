@@ -26,7 +26,8 @@ import {
 import {CCDIKHelper} from 'three/examples/jsm/animation/CCDIKSolver';
 import {MMDLoader} from 'three/examples/jsm/loaders/MMDLoader';
 import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js';
-import {quaternionFrom, getHeadRotation} from '../utils/keypoints';
+import {getYRotation, getZRotation} from '../utils/keypoints';
+import {Vector3, Quaternion, Euler} from 'three';
 
 let helper;
 const modelFile = '../../../kizunaai/kizunaai.pmx';
@@ -41,7 +42,7 @@ let head;
   * @return {string} rendered JSX.
   */
 export default function KizunaAi(props) {
-  let kp;
+  let facemesh;
   const mount = useRef(null);
 
   useEffect(() => {
@@ -130,14 +131,22 @@ export default function KizunaAi(props) {
     };
 
     const renderScene = () => {
-      kp = props.keypoints.current;
-      if (kp != null) {
+      facemesh = props.facemesh.current;
+      if (facemesh != null) {
         if (head != null) {
-          head.setRotationFromEuler(getHeadRotation(kp));
+          const mesh = facemesh.mesh;
+          const y = getYRotation(point(mesh[33]), point(mesh[263]),
+              point(mesh[1]));
+          const z = getZRotation(point(mesh[33]), point(mesh[263]));
+          head.setRotationFromEuler(new Euler(0, y, z));
         }
       }
       helper.update(clock.getDelta());
       renderer.render(scene, camera);
+    };
+
+    const point = (mesh) => {
+      return {x: mesh[0], y: mesh[1]};
     };
 
     mount.current.appendChild(renderer.domElement);

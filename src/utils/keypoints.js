@@ -98,4 +98,4 @@ function quaternionFrom(first, middle, last) {
   return quaternion.normalize();
 }
 
-export {getHeadRotation, quaternionFrom};
+export {getHeadRotation, quaternionFrom, getYRotation, getZRotation};

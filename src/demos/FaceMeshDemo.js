@@ -17,6 +17,8 @@
 
 import Camera from '../components/Camera';
 import FaceMesh from '../components/FaceMesh';
+import KizunaAi from '../components/KizunaAi';
+import {useRef} from 'react';
 
 const style = {
   position: 'absolute',
@@ -29,12 +31,13 @@ const style = {
 };
 
 const FaceMeshDemo = (props) => {
+  const facemesh = useRef();
   /**
    * Handles face estimation.
    * @param {Object} prediction
    */
   function onFaceEstimate(prediction) {
-    console.log(prediction);
+    facemesh.current = prediction;
   }
 
   return <div>
@@ -43,6 +46,7 @@ const FaceMeshDemo = (props) => {
         backend='webgl'
         onFaceEstimate={onFaceEstimate} />
     </Camera>
+    <KizunaAi facemesh={facemesh} position={[0, -1, 0]}/>
   </div>;
 };
 
