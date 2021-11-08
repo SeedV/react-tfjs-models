@@ -74,7 +74,7 @@ const CartoonMirror = (props) => {
           <Mousy keypoints={keypoints} position={[0, -1, 0]}/>
         </Suspense>
       </Canvas> */}
-      <KizunaAi />
+      <KizunaAi keypoints={keypoints} position={[0, -1, 0]}/>
     </div>
   </div>;
 };

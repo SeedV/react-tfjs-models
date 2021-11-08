@@ -26,7 +26,7 @@ import {
 import {CCDIKHelper} from 'three/examples/jsm/animation/CCDIKSolver';
 import {MMDLoader} from 'three/examples/jsm/loaders/MMDLoader';
 import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js';
-
+import {quaternionFrom, getHeadRotation} from '../utils/keypoints';
 
 let helper;
 const modelFile = '../../../kizunaai/kizunaai.pmx';
@@ -41,6 +41,7 @@ let head;
   * @return {string} rendered JSX.
   */
 export default function KizunaAi(props) {
+  let kp;
   const mount = useRef(null);
 
   useEffect(() => {
@@ -129,9 +130,11 @@ export default function KizunaAi(props) {
     };
 
     const renderScene = () => {
-      if (head != null) {
-        // head.rotation.x = Math.PI / 8;
-        head.rotation.y = 0;
+      kp = props.keypoints.current;
+      if (kp != null) {
+        if (head != null) {
+          head.setRotationFromEuler(getHeadRotation(kp));
+        }
       }
       helper.update(clock.getDelta());
       renderer.render(scene, camera);
