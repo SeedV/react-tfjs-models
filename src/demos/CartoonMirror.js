@@ -20,6 +20,7 @@ import BlazePose from '../components/BlazePose';
 import {Canvas} from '@react-three/fiber';
 import Mousy from '../components/Mousy';
 import {Suspense, useRef} from 'react';
+import KizunaAi from '../components/KizunaAi';
 
 const style = {
   position: 'absolute',
@@ -64,7 +65,7 @@ const CartoonMirror = (props) => {
         onPoseEstimate={onPoseEstimate}/>
     </Camera>
     <div style={{position: 'relative', width: 600, height: 600}}>
-      <Canvas
+      {/* <Canvas
         colorManagement
         shadowMap
         camera={{position: [0, 0, 2], fov: 60}}>
@@ -72,7 +73,8 @@ const CartoonMirror = (props) => {
         <Suspense fallback={null}>
           <Mousy keypoints={keypoints} position={[0, -1, 0]}/>
         </Suspense>
-      </Canvas>
+      </Canvas> */}
+      <KizunaAi />
     </div>
   </div>;
 };
