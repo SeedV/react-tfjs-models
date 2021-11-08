@@ -20,13 +20,11 @@ import * as THREE from 'three';
 import {MMDAnimationHelper} from
   'three/examples/jsm/animation/MMDAnimationHelper.js';
 import {MMDLoader} from 'three/examples/jsm/loaders/MMDLoader';
-import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js';
 import {getYRotation, getZRotation} from '../utils/keypoints';
 import {Euler} from 'three';
 
 let helper;
 const modelFile = '../../../kizunaai/kizunaai.pmx';
-let effect;
 let physics;
 let head;
 
@@ -37,10 +35,10 @@ let head;
   * @return {string} rendered JSX.
   */
 export default function KizunaAi(props) {
-  let facemesh;
   const mount = useRef(null);
 
   useEffect(() => {
+    let facemesh;
     const width = mount.current.clientWidth;
     const height = mount.current.clientHeight;
     let frameId;
@@ -71,8 +69,6 @@ export default function KizunaAi(props) {
     camera.position.set(0, 0, 16);
     renderer.setClearColor(0x000000, 0);
     renderer.setSize(width, height);
-
-    effect = new OutlineEffect(renderer, {});
 
     helper = new MMDAnimationHelper();
     const mmdLoader = new MMDLoader();
@@ -153,7 +149,7 @@ export default function KizunaAi(props) {
       scene.remove(mesh);
       ambient.dispose();
     };
-  });
+  }, []); // eslint-disable-line
 
   return (
     <div ref={mount} style={{position: 'relative', width: 600, height: 600}} />
