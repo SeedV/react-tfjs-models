@@ -131,6 +131,24 @@ export default function KizunaAi(props) {
       frameId = window.requestAnimationFrame(animate);
     };
 
+    const norm = (p1, p2) => {
+      return ((x, y) => Math.sqrt(x * x + y * y))(p1[0] - p2[0], p1[1] - p2[1]);
+    };
+
+    const mouthOpening = (mar) => {
+      if (mar < 0.1) {
+        return 0;
+      } else if (mar < 0.2) {
+        return 11;
+      } else if (mar < 0.3) {
+        return 12;
+      } else if (mar < 0.4) {
+        return 13;
+      } else {
+        return 14;
+      }
+    };
+
     const renderScene = () => {
       facemesh = props.facemesh.current;
       if (facemesh != null) {
@@ -145,6 +163,29 @@ export default function KizunaAi(props) {
               new Euler(0,
                   previousHeadRotation.mean[0],
                   previousHeadRotation.mean[1]));
+        }
+        if (mesh.morphTargetInfluences) {
+          mesh.morphTargetInfluences[11] = 0;
+          mesh.morphTargetInfluences[12] = 0;
+          mesh.morphTargetInfluences[13] = 0;
+          mesh.morphTargetInfluences[14] = 0;
+          const scaledMesh = facemesh.scaledMesh;
+          const p1 = scaledMesh[78];
+          const p2 = scaledMesh[81];
+          const p3 = scaledMesh[13];
+          const p4 = scaledMesh[311];
+          const p5 = scaledMesh[308];
+          const p6 = scaledMesh[402];
+          const p7 = scaledMesh[14];
+          const p8 = scaledMesh[178];
+
+          const mar = (norm(p2, p8) + norm(p3, p7) + norm(p4, p6)) /
+            (2 * norm(p1, p5) + 1e-6);
+
+          const opening = mouthOpening(mar);
+          if (opening > 0) {
+            mesh.morphTargetInfluences[opening] = 1;
+          }
         }
       }
       helper.update(clock.getDelta());
