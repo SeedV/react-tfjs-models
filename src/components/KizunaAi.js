@@ -134,7 +134,7 @@ export default function KizunaAi(props) {
       facemesh = props.facemesh.current;
       if (facemesh != null) {
         if (head != null) {
-          const mesh = facemesh.mesh;
+          const mesh = facemesh.scaledMesh;
           const y = getYRotation(point(mesh[33]), point(mesh[263]),
               point(mesh[1]));
           const z = getZRotation(point(mesh[33]), point(mesh[263]));
