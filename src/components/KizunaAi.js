@@ -19,15 +19,10 @@ import React, {useEffect, useRef} from 'react';
 import * as THREE from 'three';
 import {MMDAnimationHelper} from
   'three/examples/jsm/animation/MMDAnimationHelper.js';
-import {
-  MMDPhysics,
-  MMDPhysicsHelper,
-} from 'three/examples/jsm/animation/MMDPhysics';
-import {CCDIKHelper} from 'three/examples/jsm/animation/CCDIKSolver';
 import {MMDLoader} from 'three/examples/jsm/loaders/MMDLoader';
 import {OutlineEffect} from 'three/examples/jsm/effects/OutlineEffect.js';
 import {getYRotation, getZRotation} from '../utils/keypoints';
-import {Vector3, Quaternion, Euler} from 'three';
+import {Euler} from 'three';
 
 let helper;
 const modelFile = '../../../kizunaai/kizunaai.pmx';
@@ -87,7 +82,7 @@ export default function KizunaAi(props) {
 
       scene.add(mesh);
 
-      helper.add(mesh, {physics: false});
+      helper.add(mesh, {physics: true});
 
       createIkHelper();
       createPhysicsHelper();
@@ -108,7 +103,7 @@ export default function KizunaAi(props) {
     };
 
     const bindBones = () => {
-      const bones = mesh.skeleton.bones;
+      const bones = physics.mesh.skeleton.bones;
       if (bones) {
         head = bones[8];
       }

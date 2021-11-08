@@ -18,7 +18,7 @@
 import Camera from '../components/Camera';
 import FaceMesh from '../components/FaceMesh';
 import KizunaAi from '../components/KizunaAi';
-import {useRef} from 'react';
+import {useEffect, useRef} from 'react';
 
 const style = {
   position: 'absolute',
@@ -30,6 +30,8 @@ const style = {
   height: 480,
 };
 
+const ammoJs = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/js/libs/ammo.wasm.js';
+
 const FaceMeshDemo = (props) => {
   const facemesh = useRef();
   /**
@@ -39,6 +41,31 @@ const FaceMeshDemo = (props) => {
   function onFaceEstimate(prediction) {
     facemesh.current = prediction;
   }
+
+  /**
+   * Fetch the script and call the callback function.
+   * @param {string} url
+   * @param {Function} callback
+   */
+  function getScript(url, callback) {
+    const script = document.createElement('script');
+    script.onload = () => {
+      setTimeout(callback);
+    };
+    script.src = url;
+    document.head.appendChild(script);
+  }
+
+  useEffect(() => {
+    getScript(ammoJs, () => {
+      if (window.Ammo) {
+        // eslint-disable-next-line
+        window.Ammo().then(async () => {
+
+        });
+      }
+    });
+  }, []);
 
   return <div>
     <Camera style={style}>
