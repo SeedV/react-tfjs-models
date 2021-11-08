@@ -22,9 +22,12 @@ import {MMDAnimationHelper} from
 import {MMDLoader} from 'three/examples/jsm/loaders/MMDLoader';
 import {getYRotation, getZRotation} from '../utils/keypoints';
 import {Euler} from 'three';
+import {KalmanFilter} from 'kalman-filter';
 
+/** @type {MMDAnimationHelper} */
 let helper;
 const modelFile = '../../../kizunaai/kizunaai.pmx';
+/** @type {MMDAnimationHelperMixer.physics} */
 let physics;
 let head;
 
@@ -41,7 +44,13 @@ export default function KizunaAi(props) {
     let facemesh;
     const width = mount.current.clientWidth;
     const height = mount.current.clientHeight;
+    /** @type {number} */
     let frameId;
+    const kalmanFilter = new KalmanFilter({
+      observation: 2,
+      dynamic: 'constant-position',
+    });
+    let previousHeadRotation = null;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(20, width / height, 0.1, 1000);
@@ -71,6 +80,7 @@ export default function KizunaAi(props) {
     renderer.setSize(width, height);
 
     helper = new MMDAnimationHelper();
+    /** @type {MMDLoader} */
     const mmdLoader = new MMDLoader();
     mmdLoader.load(modelFile, async (object) => {
       mesh = object;
@@ -99,7 +109,7 @@ export default function KizunaAi(props) {
     };
 
     const bindBones = () => {
-      const bones = physics.mesh.skeleton.bones;
+      const bones = physics?.mesh.skeleton.bones;
       if (bones) {
         head = bones[8];
       }
@@ -129,7 +139,12 @@ export default function KizunaAi(props) {
           const y = getYRotation(point(mesh[33]), point(mesh[263]),
               point(mesh[1]));
           const z = getZRotation(point(mesh[33]), point(mesh[263]));
-          head.setRotationFromEuler(new Euler(0, y, z));
+          previousHeadRotation = kalmanFilter.filter(
+              {previousCorrected: previousHeadRotation, observation: [y, z]});
+          head.setRotationFromEuler(
+              new Euler(0,
+                  previousHeadRotation.mean[0],
+                  previousHeadRotation.mean[1]));
         }
       }
       helper.update(clock.getDelta());
