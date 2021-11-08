@@ -26,8 +26,8 @@ const style = {
   left: 0,
   right: 0,
   zIndex: -1,
-  width: 640,
-  height: 480,
+  width: 160,
+  height: 120,
 };
 
 const ammoJs = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/js/libs/ammo.wasm.js';

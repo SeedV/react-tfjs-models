@@ -96,7 +96,7 @@ export default function KizunaAi(props) {
     });
 
     const createIkHelper = () => {
-      const ikHelper = helper.objects.get(mesh).ikSolver.createHelper();
+      const ikHelper = helper.objects.get(mesh)?.ikSolver.createHelper();
 
       if (ikHelper) {
         ikHelper.visible = false;
@@ -105,7 +105,7 @@ export default function KizunaAi(props) {
     };
 
     const createPhysicsHelper = () => {
-      physics = helper.objects.get(mesh).physics;
+      physics = helper.objects.get(mesh)?.physics;
     };
 
     const bindBones = () => {
@@ -136,17 +136,21 @@ export default function KizunaAi(props) {
     };
 
     const mouthOpening = (mar) => {
-      if (mar < 0.1) {
+      if (mar < 0.2) {
         return 0;
-      } else if (mar < 0.2) {
-        return 11;
       } else if (mar < 0.3) {
-        return 12;
+        return 11;
       } else if (mar < 0.4) {
+        return 12;
+      } else if (mar < 0.6) {
         return 13;
       } else {
         return 14;
       }
+    };
+
+    const clamp = (num, min, max) => {
+      return Math.min(Math.max(num, min), max);
     };
 
     const renderScene = () => {
@@ -154,9 +158,12 @@ export default function KizunaAi(props) {
       if (facemesh != null) {
         if (head != null) {
           const mesh = facemesh.scaledMesh;
-          const y = getYRotation(point(mesh[33]), point(mesh[263]),
-              point(mesh[1]));
-          const z = getZRotation(point(mesh[33]), point(mesh[263]));
+          const y = clamp(
+              getYRotation(point(mesh[33]), point(mesh[263]), point(mesh[1])),
+              -0.4, 0.4);
+          const z = clamp(
+              getZRotation(point(mesh[33]), point(mesh[263])),
+              -0.4, 0.4);
           previousHeadRotation = kalmanFilter.filter(
               {previousCorrected: previousHeadRotation, observation: [y, z]});
           head.setRotationFromEuler(
