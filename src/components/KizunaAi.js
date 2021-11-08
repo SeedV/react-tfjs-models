@@ -23,6 +23,7 @@ import {MMDLoader} from 'three/examples/jsm/loaders/MMDLoader';
 import {getYRotation, getZRotation} from '../utils/keypoints';
 import {Euler} from 'three';
 import {KalmanFilter} from 'kalman-filter';
+import Stats from 'stats.js';
 
 /** @type {MMDAnimationHelper} */
 let helper;
@@ -41,6 +42,7 @@ export default function KizunaAi(props) {
   const mount = useRef(null);
 
   useEffect(() => {
+    const stats = new Stats();
     let facemesh;
     const width = mount.current.clientWidth;
     const height = mount.current.clientHeight;
@@ -127,8 +129,10 @@ export default function KizunaAi(props) {
     };
 
     const animate = () => {
+      stats.begin();
       renderScene();
       frameId = window.requestAnimationFrame(animate);
+      stats.end();
     };
 
     const norm = (p1, p2) => {
@@ -204,6 +208,9 @@ export default function KizunaAi(props) {
     };
 
     mount.current.appendChild(renderer.domElement);
+
+    mount.current.appendChild(stats.dom);
+
     start();
     return () => {
       stop();
